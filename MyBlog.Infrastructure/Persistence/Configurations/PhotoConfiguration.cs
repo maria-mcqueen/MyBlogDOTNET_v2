@@ -1,10 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MyBlog.Domain.Aggregates.PhotoAggregate;
 
-namespace MyBlog.Infrastructure.Persistence.Configurations
+namespace MyBlog.Infrastructure.Persistence.Configurations;
+
+public class PhotoConfiguration:IEntityTypeConfiguration<Photo>
 {
-    internal class PhotoConfiguration
+    public void Configure(EntityTypeBuilder<Photo> builder)
     {
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Title)
+            .IsRequired()
+            .HasMaxLength(200);
+
+        builder.Property(x => x.Description)
+            .HasMaxLength(1000);
+
+        builder.Property(x => x.FilePath)
+            .IsRequired();
+
+        builder.Property(x => x.UploadedAt)
+            .IsRequired();
+
+        builder.ToTable("Photos");
     }
 }
